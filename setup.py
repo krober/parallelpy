@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1'
+version = '0.2.0'
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -29,4 +29,5 @@ setup(name='parallelpy',
       entry_points="""
       # -*- Entry points: -*-
       """,
+      python_requires='>=3.6',
       )
