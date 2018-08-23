@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.0.2'
+version = '0.0.3'
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -16,8 +16,8 @@ setup(name='parallelpy',
             "License :: OSI Approved :: MIT License",
       ], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
       keywords='multiprocessing data science',
-      author='Kyle Rober',
-      author_email='krober@thevigorous.com',
+      author='Kyle',
+      author_email='todo@todo.com',
       url='https://github.com/krober/parallelpy',
       license='MIT License',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
