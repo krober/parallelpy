@@ -1,5 +1,5 @@
 from datetime import datetime
-from parallelpy import Parallelizer
+from src.parallelpy import Parallelizer
 
 num_top_iterations = 10
 num_nested_iterations = 500000
