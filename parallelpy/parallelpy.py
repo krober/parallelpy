@@ -36,7 +36,7 @@ class Parallelizer:
 
         self.__proc_count = 0
         self.__cpu_count = cpu_count()
-        
+
         self.__iterations = len(args)
         self.__processes = []
         self.__incoming = 0
@@ -53,29 +53,42 @@ class Parallelizer:
             or other data structures before appending to the proxy list 
             to avoid race conditions.
         """
+        if self.enable_results:           
+            self.__run_managed
+        else:
+            self.__run_unmanaged
+
+    def __run_managed(self):
+
         with Manager() as manager:
+         
+            managed_results = manager.list()
 
-            if self.enable_results:           
-                managed_results = manager.list()
-                self.__generate_procs(managed_results)
-            else:
-                self.__generate_procs()
-
-            try:
-                while self.__incoming < self.__iterations:
-                    # sleep reduces the CPU impact of this 'manager loop'
-                    sleep(1 / 100)
-                    self.__mark_finished_procs()
-                    self.__spawn_available_procs()
-            except Exception as e:
-                print(self)
-                raise e
-
+            self.__generate_procs(managed_results)
+            self.__run_procs()
             self.__finalize_procs()
 
-            if self.enable_results:
-                results = list(managed_results)
-                return results
+            results = list(managed_results)
+
+            return results
+
+    def __run_unmanaged(self):
+
+        self.__generate_procs()
+        self.__run_procs()
+        self.__finalize_procs()
+
+    def __run_procs(self):
+
+        try:
+            while self.__incoming < self.__iterations:
+                # sleep reduces the CPU impact of this 'manager loop'
+                sleep(1 / 100)
+                self.__mark_finished_procs()
+                self.__spawn_available_procs()
+        except Exception as e:
+            print(self)
+            raise e
 
     def __set_proc_count_auto(self, max_procs: int):
         """
