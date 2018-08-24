@@ -35,6 +35,8 @@ class Parallelizer:
         self.enable_results = enable_results
 
         self.__proc_count = 0
+        self.__cpu_count = cpu_count()
+        
         self.__iterations = len(args)
         self.__processes = []
         self.__incoming = 0
@@ -82,17 +84,17 @@ class Parallelizer:
         :param max_procs: int: max procs to allow simultaneously
         :return: None
         """
-        try:
-            self.__validate_proc_count(max_procs)
-        except ValueError as e:
-            raise e
+        self.__validate_proc_count(max_procs)
 
-        if max_procs < cpu_count():
+        if self.__iterations <= self.__cpu_count 
+            and self.__iterations <= max_procs:
+            self.__proc_count = self.__iterations
+        elif max_procs <= self.__cpu_count:
             self.__proc_count = max_procs
         else:
-            self.__proc_count = cpu_count()
-            for i in range(cpu_count(), max_procs + 1):
-                if len(self.args) % i == 0:
+            self.__proc_count = self.__cpu_count
+            for i in range(self.__cpu_count, max_procs + 1):
+                if self.__iterations % i == 0:
                     self.__proc_count = i
                     break
 
@@ -105,10 +107,7 @@ class Parallelizer:
         :param count: int: number of procs to run simultaneously
         :return: None
         """
-        try:
-            self.__validate_proc_count(count)
-        except ValueError as e:
-            raise e
+        self.__validate_proc_count(count)
 
         self.__proc_count = count
 
@@ -119,7 +118,7 @@ class Parallelizer:
         """
         if count < 1:
             raise ValueError('Number of processes must be > 0')
-        elif not isinstance(count, int):
+        elif isinstance(count, bool) or not isinstance(count, int):
             raise ValueError('Number of processes must be an integer')
 
     def __set_proc_count(self, auto_proc_count: bool, max_proc_count: int):
@@ -187,7 +186,7 @@ class Parallelizer:
     def __str__(self):
         stats = f'\n' \
                 f'Target function:   {self.target.__name__}\n' \
-                f'Number of args:    {len(self.args)}\n' \
+                f'Number of iters:   {self.__iterations}\n' \
                 f'Number of threads: {self.__proc_count}\n' \
                 f'Number of procs:   {len(self.__processes)}\n' \
                 f'Current incoming:  {self.__incoming}\n' \
