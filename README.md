@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://pypi.org/project/parallelpy/">
-        <img src="https://img.shields.io/badge/PyPI-0.0.3-brightgreen.svg?longCache=true&style=flat-square"/>
+        <img src="https://img.shields.io/badge/PyPI-0.0.4-brightgreen.svg?longCache=true&style=flat-square"/>
     </a>
 </p>  
 
