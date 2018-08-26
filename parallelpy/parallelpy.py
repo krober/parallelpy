@@ -53,32 +53,44 @@ class Parallelizer:
             or other data structures before appending to the proxy list 
             to avoid race conditions.
         """
-        if self.enable_results:           
-            self.__run_managed
+        if self.enable_results:
+            return self.__run_managed()
         else:
-            self.__run_unmanaged
+            self.__run_unmanaged()
 
     def __run_managed(self):
+        """
+        Configures process manager and runs procs
+        :return: List: converted from ProxyList
+        """
 
         with Manager() as manager:
-         
-            managed_results = manager.list()
+            results = manager.list()
 
-            self.__generate_procs(managed_results)
+            self.__generate_procs(results)
             self.__run_procs()
             self.__finalize_procs()
 
-            results = list(managed_results)
+            results = list(results)
 
             return results
 
     def __run_unmanaged(self):
+        """
+        Runs data-unmanaged procs - for when you just want to run in
+        parallel and don't need 'return' data
+        :return: nothing
+        """
 
         self.__generate_procs()
         self.__run_procs()
         self.__finalize_procs()
 
     def __run_procs(self):
+        """
+        Runs processes, prints self on exception and re-raises exception
+        :return: nothing
+        """
 
         try:
             while self.__incoming < self.__iterations:
@@ -97,10 +109,8 @@ class Parallelizer:
         :param max_procs: int: max procs to allow simultaneously
         :return: None
         """
-        self.__validate_proc_count(max_procs)
-
-        if self.__iterations <= self.__cpu_count 
-            and self.__iterations <= max_procs:
+        if (self.__iterations <= self.__cpu_count
+                and self.__iterations <= max_procs):
             self.__proc_count = self.__iterations
         elif max_procs <= self.__cpu_count:
             self.__proc_count = max_procs
@@ -120,8 +130,6 @@ class Parallelizer:
         :param count: int: number of procs to run simultaneously
         :return: None
         """
-        self.__validate_proc_count(count)
-
         self.__proc_count = count
 
     def __validate_proc_count(self, count: int):
@@ -141,6 +149,8 @@ class Parallelizer:
         :param max_proc_count: int: max num of procs to run simultaneously
         :return: None
         """
+        self.__validate_proc_count(max_proc_count)
+
         if auto_proc_count:
             self.__set_proc_count_auto(max_proc_count)
         else:
@@ -158,13 +168,13 @@ class Parallelizer:
                 self.__processes.append(Process(
                     target=self.target,
                     args=(arg, managed_results)
-                    ))
+                ))
         else:
             for arg in self.args:
                 self.__processes.append(Process(
                     target=self.target,
                     args=(arg,)
-                    ))
+                ))
 
     def __spawn_available_procs(self):
         """
@@ -211,6 +221,3 @@ class Parallelizer:
 
     def __repr__(self):
         return self.__str__()
-
-
-
