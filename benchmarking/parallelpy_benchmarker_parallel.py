@@ -7,9 +7,7 @@ num_nested_iterations = 500000
 
 def top_function():
 
-    results = []
-
-    args = [1] * num_top_iterations
+    args = [i for i in range(num_top_iterations)]
 
     par = Parallelizer(
         target=nested_function,
@@ -26,12 +24,20 @@ def top_function():
 
 def nested_function(a, results):
 
-    for i in range(num_nested_iterations):
-        a *= 2
+    n = 1
 
-    result = (a,)
+    for i in range(num_nested_iterations):
+        n *= 2
+
+    result = a
 
     results.append(result)
+
+
+def print_results(results):
+
+    print()
+    print(results)
 
 
 def main():
@@ -39,6 +45,8 @@ def main():
     pre_calc_time = datetime.now()
     results = top_function()
     calc_time = datetime.now() - pre_calc_time
+
+    print_results(results)
 
     print('\n****************************')
     print('Calc time=', calc_time)
