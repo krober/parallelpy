@@ -1,4 +1,6 @@
 from datetime import datetime
+# from timeit import timeit
+
 from parallelpy import Parallelizer
 
 num_top_iterations = 10
@@ -41,6 +43,9 @@ def print_results(results):
 
 
 def main():
+
+    # print(timeit(stmt=top_function,
+    #              number=10))
 
     pre_calc_time = datetime.now()
     results = top_function()
