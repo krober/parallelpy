@@ -1,12 +1,12 @@
 <p align="center">
     <a href="https://pypi.org/project/parallelpy/">
-        <img src="https://img.shields.io/badge/PyPI-0.0.4-brightgreen.svg?longCache=true&style=flat-square"/>
+        <img src="https://img.shields.io/badge/PyPI-0.0.5-brightgreen.svg?longCache=true&style=flat-square"/>
     </a>
 </p>  
 
 # parallelpy  
 
-A minimal parallel processing module for data science applications  
+A minimal parallel processing wrapper inspired for data science    
 
 + pip install parallelpy  
 
