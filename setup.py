@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.0.4'
+version = '0.0.5'
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='parallelpy',
       version=version,
-      description="A minimal multiprocessing module for data science",
+      description="A minimal multiprocessing wrapper inspired for data science",
       long_description=long_description,
       long_description_content_type="text/markdown",
       classifiers=[
