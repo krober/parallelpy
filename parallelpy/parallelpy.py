@@ -63,7 +63,6 @@ class Parallelizer:
         Configures process manager and runs procs
         :return: List: converted from ProxyList
         """
-
         with Manager() as manager:
             results = manager.list()
 
@@ -81,7 +80,6 @@ class Parallelizer:
         parallel and don't need 'return' data
         :return: nothing
         """
-
         self.__generate_procs()
         self.__run_procs()
         self.__finalize_procs()
@@ -91,7 +89,6 @@ class Parallelizer:
         Runs processes, prints self on exception and re-raises exception
         :return: nothing
         """
-
         try:
             while self.__incoming < self.__iterations:
                 # sleep reduces the CPU impact of this 'manager loop'
@@ -137,10 +134,10 @@ class Parallelizer:
         Throws ValueError if count < 1
         :return: None
         """
-        if count < 1:
-            raise ValueError('Number of processes must be > 0')
-        elif isinstance(count, bool) or not isinstance(count, int):
+        if isinstance(count, bool) or not isinstance(count, int):
             raise ValueError('Number of processes must be an integer')
+        elif count < 1:
+            raise ValueError('Number of processes must be > 0')
 
     def __set_proc_count(self, auto_proc_count: bool, max_proc_count: int):
         """
@@ -203,7 +200,8 @@ class Parallelizer:
         Finalizes procs/waits on remaining running procs
         :return: None
         """
-        [process.join() for process in self.__processes]
+        for process in self.__processes:
+            process.join()
         self.__mark_finished_procs()
 
     def __str__(self):
